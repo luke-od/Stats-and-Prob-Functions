@@ -114,25 +114,50 @@ dpois(4, 4.5)
 
 
 ## Z-SCORE
+# x = a specific value u want to test
+# mu = population mean
+# s = standard deviation
+# n = sample size
+# tail = 1 or 2 tailed test
 z <- (x-mu)/(sd/sqrt(n))
 z <- (28-30.5)/(2.5/sqrt(115))
 z
+# or as a proper function
+z.test <- function(x, mu, s, n, tail){
+  z <- (x-mu)/(s/sqrt(n))
+  if(tail==1) return(cat("z-score =", z, "\np-value", pnorm(-abs(z))))
+  if(tail==2) return(cat("z-score =", z, "\np-value", 2*pnorm(-abs(z))))
+  if(tail != 1 | tail != 2) return("can only be 1 or 2 tailed")
+}
+z.test(6, 5, 2, 20, 2)
+
 # for proportional tests
 prop.z <- (p.hat-p)/sqrt((p*q)/n)
 prop.z <- (.29-.25)/sqrt((.25*.75)/1000)
 prop.z
 
+
+
 ## P-VALUE
 p.value <- 2 * pnorm(-abs(z))
-p.value <- 2 * pnorm(-abs(prop.z))
 p.value
 
-## LINEAR MODEL
-lm <- lm(y ~ x)
+# or as a proper function
+p.value <-function(z, tail){
+  if(tail==1) return(cat("z-score =", z, "\np-value =", pnorm(-abs(z))))
+  if(tail==2) return(cat("z-score =", z, "\np-value =", 2*pnorm(-abs(z))))
+  if(tail !=1 | tail !=2) return("can only be 1 or 2 tailed")
+}
+p.value(1.96, 1)
+
+
+## LINEAR REGRESSION MODEL
+lm <- lm(y ~ x, data = z)
 sum.lm <- summary(lm)
-slope <- slm$coefficients[2]
-intercept <- slm$coefficients[1]
-cat("y =", slope, "x", "+", intercept)
+slope <- sum.lm$coefficients[2]
+intercept <- sum.lm$coefficients[1]
+corr <- sum.lm$r.squared
+cat("y =", slope, "x", "+", intercept, "\nR-squared = ", corr)
 
 
 
@@ -151,14 +176,14 @@ expected.values <- function(observed.data) {
 chi.squared <- function(observed.data, expected.data, alpha = 0.05) {
   result <- chisq.test(observed.data, expected.data)
   print(result)
-  # Calculate the chi-squared cut-off value (rejection region)
+# Calculate the chi-squared cut-off value (rejection region)
   DoF <- nrow(observed.data) - 1
   cutoff <- qchisq(1 - alpha, DoF)
   
-  # Print the test results
+# Print the test results
   cat("\n\nTest Statistic (X-squared):", result$statistic, "\n")
   cat("Chi-squared Cutoff:", cutoff, "\n")
-  # Determine independence
+# Determine independence
   if (result$statistic > cutoff) {
     cat("Conclusion: The variables are dependent (reject the null hypothesis).\n")
   } else {
