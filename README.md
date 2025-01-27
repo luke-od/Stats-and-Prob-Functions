@@ -1,9 +1,11 @@
 # Stats + Prob functions
-A bunch of functions I made for my introuduction to statistics and probability course
+A bunch of functions I made for my introuduction to statistics and probability course including:
+- permutations + cobinations, with and without replacement
+- probability mass function, Bernoulli trials, binomial distribution, geometric dist., poisson dist.
+- linear regression model (get formula of the line printed out etc.)
+- z-score, p-value, chi-square test for independence
 
 
-zscore.R is z-score and p-value functions as functions
-- functions to find z-scores and p-values in R
-- find standard deviation with the function sd()
+Source of z-score and p-value as proper functions
+- https://youtu.be/DRRT4k7A2dM
 - idk why these aren't built in?
-- source: https://youtu.be/DRRT4k7A2dM
