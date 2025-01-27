@@ -1,33 +1,28 @@
 ### MY FUNCTIONS
+
+## PROBABILITY
 # n = total number of trials
 # r = number of successful trials
 
-num <- c(7, 3, 10, 9, 8, 2, 0)
-mean(num)
 
-choose(56,8)
-
-dbinom(2, 18, .150)
-
-
-# permutation = order matters
+# PERMUTATION = order matters
 perm = function(n, r) {
   ans = factorial(n) / factorial(n-r)
   print(ans)
 }
-
+# with replacement
 permReplace = function(n, r) {
   ans = n**r
   print(ans)
 }
 
 
-# combination = order doesn't matter
+# COMBINATION = order doesn't matter
 comb = function(n, r) {
   ans = factorial(n) / (factorial(n-r)*factorial(r))
   print(ans)
 }
-
+# with replacement
 combReplace = function(n, r) {
   ans = factorial(n+r-1) / (factorial(n-1)*factorial(r))
   print(ans)
@@ -140,5 +135,38 @@ intercept <- slm$coefficients[1]
 cat("y =", slope, "x", "+", intercept)
 
 
-## CHI SQUARE TEST
 
+## CHI-SQUARE TEST
+# Function to calculate expected values
+expected.values <- function(observed.data) {
+  col.totals <- colSums(observed.data)
+  row.totals <- rowSums(observed.data)
+  grand.total <- sum(observed.data)
+  expected.data <- outer(row.totals, col.totals) / grand.total
+  return(as.data.frame(expected.data, row.names = rownames(observed.data),
+                       col.names = colnames(observed.data)))
+}
+
+# Function to perform a chi-squared test
+chi.squared <- function(observed.data, expected.data, alpha = 0.05) {
+  result <- chisq.test(observed.data, expected.data)
+  print(result)
+  # Calculate the chi-squared cut-off value (rejection region)
+  DoF <- nrow(observed.data) - 1
+  cutoff <- qchisq(1 - alpha, DoF)
+  
+  # Print the test results
+  cat("\n\nTest Statistic (X-squared):", result$statistic, "\n")
+  cat("Chi-squared Cutoff:", cutoff, "\n")
+  # Determine independence
+  if (result$statistic > cutoff) {
+    cat("Conclusion: The variables are dependent (reject the null hypothesis).\n")
+  } else {
+    cat("Conclusion: The variables are independent (fail to reject the null hypothesis).\n")
+  }
+}
+
+## HERE'S AN EXAMPLE
+Observed <- data.frame(satisfied = c(20, 40, 90), not.satisfied = c(80, 60, 10))
+Expected <- expected.values(Observed)
+chi.squared(Observed, Expected)
