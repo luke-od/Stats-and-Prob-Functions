@@ -1,9 +1,9 @@
 ### MY FUNCTIONS
+# Lucas O'Dowd, 2025. Source: https://github.com/luke-od/Stats-and-Prob-Functions
 
 ## PROBABILITY
 # n = total number of trials
 # r = number of successful trials
-
 
 # PERMUTATION = order matters
 perm = function(n, r) {
@@ -152,13 +152,19 @@ p.value(1.96, 1)
 
 
 ## LINEAR REGRESSION MODEL
-lm <- lm(y ~ x, data = z)
-sum.lm <- summary(lm)
-slope <- sum.lm$coefficients[2]
-intercept <- sum.lm$coefficients[1]
-corr <- sum.lm$r.squared
-cat("y =", slope, "x", "+", intercept, "\nR-squared = ", corr)
-
+LRM <- function(x, y, your.data) {
+  lm <- lm(y ~ x, data = your.data)
+  sum.lm <- summary(lm)
+  slope <- sum.lm$coefficients[2]
+  intercept <- sum.lm$coefficients[1]
+  corr <- sum.lm$r.squared
+  cat("slope =", slope,
+      "\nintercept =", intercept,
+      "\ny =", slope, "x", "+", intercept,
+      "\nR-squared = ", corr)
+}
+# usage
+LRM(data$x, data$y, data)
 
 
 ## CHI-SQUARE TEST
