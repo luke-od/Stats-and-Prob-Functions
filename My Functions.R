@@ -167,6 +167,7 @@ LRM <- function(x, y, your.data) {
 LRM(data$x, data$y, data)
 
 
+
 ## CHI-SQUARE TEST
 # Function to calculate expected values
 expected.values <- function(observed.data) {
@@ -197,7 +198,7 @@ chi.squared <- function(observed.data, expected.data, alpha = 0.05) {
   }
 }
 
-## HERE'S AN EXAMPLE
+## HERE'S A USAGE EXAMPLE
 Observed <- data.frame(satisfied = c(20, 40, 90), not.satisfied = c(80, 60, 10))
 Expected <- expected.values(Observed)
 chi.squared(Observed, Expected)
